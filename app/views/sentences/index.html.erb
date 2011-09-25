@@ -1,0 +1,31 @@
+<h1>Listing sentences</h1>
+
+<table>
+  <tr>
+    <th>Speaker</th>
+    <th>Episode</th>
+    <th>Sentence</th>
+    <th>Num of words</th>
+    <th>Num of chars</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @sentences.each do |sentence| %>
+  <tr>
+    <td><%= sentence.speaker_id %></td>
+    <td><%= sentence.episode_id %></td>
+    <td><%= sentence.sentence %></td>
+    <td><%= sentence.num_of_words %></td>
+    <td><%= sentence.num_of_chars %></td>
+    <td><%= link_to 'Show', sentence %></td>
+    <td><%= link_to 'Edit', edit_sentence_path(sentence) %></td>
+    <td><%= link_to 'Destroy', sentence, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Sentence', new_sentence_path %>

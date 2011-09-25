@@ -1,4 +1,12 @@
 FuturamaTranscriptsScraper::Application.routes.draw do
+  resources :scrapers
+
+  resources :episodes
+
+  resources :speakers
+
+  resources :sentences
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

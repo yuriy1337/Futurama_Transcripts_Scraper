@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  episode: 1
+  season: 1
+
+two:
+  episode: 1
+  season: 1

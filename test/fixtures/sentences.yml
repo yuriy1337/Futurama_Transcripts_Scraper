@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  speaker_id: 1
+  episode_id: 1
+  sentence: MyText
+  num_of_words: 1
+  num_of_chars: 1
+
+two:
+  speaker_id: 1
+  episode_id: 1
+  sentence: MyText
+  num_of_words: 1
+  num_of_chars: 1

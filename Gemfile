@@ -4,9 +4,14 @@ gem 'rails', '3.0.7'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem "rake", "0.8.7"
 
 gem 'sqlite3'
 
+gem 'hpricot'
+
+gem 'tactful_tokenizer'
+gem 'punkt-segmenter'
 # Use unicorn as the web server
 # gem 'unicorn'
 

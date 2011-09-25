@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Speaker:</b>
+  <%= @sentence.speaker_id %>
+</p>
+
+<p>
+  <b>Episode:</b>
+  <%= @sentence.episode_id %>
+</p>
+
+<p>
+  <b>Sentence:</b>
+  <%= @sentence.sentence %>
+</p>
+
+<p>
+  <b>Num of words:</b>
+  <%= @sentence.num_of_words %>
+</p>
+
+<p>
+  <b>Num of chars:</b>
+  <%= @sentence.num_of_chars %>
+</p>
+
+
+<%= link_to 'Edit', edit_sentence_path(@sentence) %> |
+<%= link_to 'Back', sentences_path %>
