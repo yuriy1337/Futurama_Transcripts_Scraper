@@ -13,34 +13,80 @@ class ScrapersController < ApplicationController
   
   def index
     @scrapers = Scraper.all
-
-    #html = Net::HTTP.get(URI.parse('file:///C:/Users/Yuriy/Desktop/Futurama%20Transcripts/Futurama%20Transcripts/Season%201/Transcript%20A_Big_Piece_of_Garbage.htm'))
-    html = IO.read("C:/Users/Yuriy/Desktop/Futurama Transcripts/Futurama Transcripts/Season 1/Transcript A_Big_Piece_of_Garbage.htm") 
     
-    @doc = Hpricot(html)
-    
-    @doc.search("//div[@class='poem']") do |div|
+    for season in (1..6)
       
-      div.search("//a") do |a|
-        character = (a.inner_html).strip
-        speaker = Speaker.find_by_name(character)
-        if(speaker == nil)
-          speaker = Speaker.new(:name => character)
-          speaker.save
+      episode = 1
+      
+      Dir.foreach("C:/Users/Yuriy/Desktop/Futurama Transcripts/Futurama Transcripts/Season #{season}") do |file|
+        
+        if(file == '.' || file == '..')
+          next
         end
+        
+        ep = Episode.new(:episode => episode, :season => season)
+        ep.save
+        
+        puts "ep #{episode} season #{season}"
+        
+        html = IO.read("C:/Users/Yuriy/Desktop/Futurama Transcripts/Futurama Transcripts/Season #{season}/#{file}") 
+        
+        @doc = Hpricot(html)
+        @doc.search("//div[@class='poem']") do |div|
+          
+          speaker_id = 0
+          
+          div.search("span").remove
+          
+          div.search("//b") do |b|
+            character = (b.search("a").inner_html).strip
+            if(character == "")
+              character = b.inner_html.strip
+            end
+            speaker = Speaker.find_by_name(character)
+            if(speaker == nil)
+              speaker = Speaker.new(:name => character)
+              speaker.save
+            end
+            speaker_id = speaker.id
+          end
+          
+          div.search("//p") do |p|
+            p.search("b").remove
+            p.search("i").remove
+            p.search("br").remove
+            text = ""
+            #puts p
+            p.search("a") do |a|
+              text = a.inner_html
+              p.at("a").swap("#{text}")
+            end
+            text = p.inner_html
+            text = text[1, text.size]
+            if(text != nil && text != "" && !text.empty?)
+            text = text.strip
+              if(text != nil && text != "" && !text.empty?)
+              text = text.gsub(/\[(.*?)\]/, '')
+              text = text.gsub(/\((.*?)\)/, '')
+                if(text != nil && text != "" && !text.empty?)
+                  text = text.strip
+                  tokenizer = Punkt::SentenceTokenizer.new(text)
+                  result    = tokenizer.sentences_from_text(text, :output => :sentences_text)
+                  if(result != nil)
+                    result.each do |sent|
+                      word_count = sent.count_words
+                      letter_count = sent.count('A-z')
+                      sentence = Sentence.new(:speaker_id => speaker_id, :episode_id => ep.id, :sentence => sent.strip, :num_of_words => word_count, :num_of_chars => letter_count)
+                      sentence.save
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        episode = episode + 1 
       end
-      
-      div.search("//p") do |p|
-        p.search("b").remove
-        text = p.inner_html
-        text = text[1, text.size]
-        text = text.strip
-        puts text.count_words
-        tokenizer = Punkt::SentenceTokenizer.new(text)
-        result    = tokenizer.sentences_from_text(text, :output => :sentences_text)
-        pp result
-      end
-      break
     end
     
     respond_to do |format|
