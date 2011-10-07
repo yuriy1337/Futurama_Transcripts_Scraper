@@ -1,4 +1,11 @@
 FuturamaTranscriptsScraper::Application.routes.draw do
+  
+  match 'process_words', :to => 'scrapers#process_words'
+  match 'scrapers', :to => 'scrapers#index'
+  resources :counts
+
+  resources :words
+
   resources :scrapers
 
   resources :episodes

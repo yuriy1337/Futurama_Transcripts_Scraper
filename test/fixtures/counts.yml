@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  episode_id: 1
+  speaker_id: 1
+  word_id: 1
+  count: 1
+
+two:
+  episode_id: 1
+  speaker_id: 1
+  word_id: 1
+  count: 1

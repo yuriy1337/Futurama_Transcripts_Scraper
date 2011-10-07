@@ -89,11 +89,52 @@ class ScrapersController < ApplicationController
       end
     end
     
+    process_words
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @scrapers }
     end
   end
+
+  def process_words
+    puts "in process words"
+    @sentences = Sentence.all
+    puts "got sentences"
+    
+    @sentences.each do |s|
+      sentence = s.sentence
+      words = sentence.split(/[^a-zA-Z]/)
+      
+      words.each do |w|
+        w = w.capitalize
+        if (!w.empty?)
+          word = Word.find_by_word(w)
+          if(word == nil)
+            word = Word.new(:word => w)
+            word.save
+            count = Count.new(:word_id => word.id, :episode_id => s.episode_id, :speaker_id => s.speaker_id, :count => 1)
+            count.save
+          else
+            pp s
+            c = Count.find_by_word_id_and_episode_id_and_speaker_id(word.id, s.episode_id, s.speaker_id)
+            if(c.nil?)
+              c = Count.new(:word_id => word.id, :episode_id => s.episode_id, :speaker_id => s.speaker_id, :count => 1)
+            else
+              c.count = c.count + 1  
+            end
+            #Rails.logger = Logger.new(STDOUT)
+            #logger.debug "Person attributes hash: #sentence hash: #{s}, word id: #{word.id}, ep_id: #{s.episode_id}, sp_id: #{s.speaker_id}"
+            #c = Count.find_by_word_id_and_episode_id_and_speaker_id(:word_id => word.id, :episode_id => s.episode_id, :speaker_id => s.speaker_id)
+            #puts "#{c.episode_id}"
+            c.save
+          end
+        end
+      end
+    end
+  
+  end
+
 
   # GET /scrapers/1
   # GET /scrapers/1.xml

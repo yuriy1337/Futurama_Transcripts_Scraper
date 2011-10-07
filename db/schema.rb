@@ -10,7 +10,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110925023854) do
+ActiveRecord::Schema.define(:version => 20111003002505) do
+
+  create_table "counts", :force => true do |t|
+    t.integer  "episode_id"
+    t.integer  "speaker_id"
+    t.integer  "word_id"
+    t.integer  "count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "episodes", :force => true do |t|
     t.integer  "episode"
@@ -36,6 +45,12 @@ ActiveRecord::Schema.define(:version => 20110925023854) do
 
   create_table "speakers", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "words", :force => true do |t|
+    t.text     "word"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

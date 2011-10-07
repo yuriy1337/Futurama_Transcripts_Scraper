@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Episode:</b>
+  <%= @count.episode_id %>
+</p>
+
+<p>
+  <b>Speaker:</b>
+  <%= @count.speaker_id %>
+</p>
+
+<p>
+  <b>Word:</b>
+  <%= @count.word_id %>
+</p>
+
+<p>
+  <b>Count:</b>
+  <%= @count.count %>
+</p>
+
+
+<%= link_to 'Edit', edit_count_path(@count) %> |
+<%= link_to 'Back', counts_path %>
