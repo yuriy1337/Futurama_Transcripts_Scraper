@@ -12,6 +12,8 @@ gem 'hpricot'
 
 gem 'tactful_tokenizer'
 gem 'punkt-segmenter'
+#gem 'fileutils'
+#gem 'open-uri'
 # Use unicorn as the web server
 # gem 'unicorn'
 

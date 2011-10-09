@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111003002505) do
+ActiveRecord::Schema.define(:version => 20111007032601) do
 
   create_table "counts", :force => true do |t|
     t.integer  "episode_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20111003002505) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "image_path"
   end
 
   create_table "words", :force => true do |t|

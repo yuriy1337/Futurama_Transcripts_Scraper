@@ -10,9 +10,16 @@ class ScrapersController < ApplicationController
   require 'hpricot'
   require 'tactful_tokenizer'
   require 'pp'
+  require 'fileutils'
+  require 'open-uri'
+  require 'pathname'
+  #require 'rubygems'
+  #require 'scrapi'
   
   def index
     @scrapers = Scraper.all
+    
+    url = "http://theinfosphere.org/"
     
     for season in (1..6)
       
@@ -39,13 +46,36 @@ class ScrapersController < ApplicationController
           div.search("span").remove
           
           div.search("//b") do |b|
+            character_url = nil
+            b.search("a").map {|e| character_url = e.get_attribute("href") }
+            
             character = (b.search("a").inner_html).strip
             if(character == "")
               character = b.inner_html.strip
             end
             speaker = Speaker.find_by_name(character)
             if(speaker == nil)
-              speaker = Speaker.new(:name => character)
+                file_name = "Unknown-person.jpg"
+                if(character_url != nil)
+                img_url = nil
+                char_html = Net::HTTP.get(URI.parse("http://theinfosphere.org/#{character_url}"))
+                @char_doc = Hpricot(char_html)
+                puts "char_html #{character_url}"
+                @char_doc.search("//div[@id='image1']") do |img_div|
+                  img_url = nil
+                  puts "img_div #{img_div}"
+                  img_div.search("img").map {|e| img_url = e.get_attribute("src") }
+                end
+                if(img_url!= nil && !img_url.empty?)
+                  path = Pathname.new(img_url)  
+                  if not path.relative? then img_url = url + img_url end
+                  open(img_url) do |source|
+                    file_name = img_url.split('/').last
+                    open("images" + '/' + file_name, 'wb') {|file| file.write(source.read())}
+                  end
+                end
+              end
+              speaker = Speaker.new(:name => character, :image_path => file_name)
               speaker.save
             end
             speaker_id = speaker.id
