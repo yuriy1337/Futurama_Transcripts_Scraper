@@ -127,6 +127,45 @@ class ScrapersController < ApplicationController
     end
   end
 
+  def process_exchanges
+    @sentences = Sentence.all
+    puts "got sentences"
+    
+    id1 = nil
+    id2 = nil
+    count = 0
+    @sentences.each do |s|
+      id1 = id2
+      id2 = s.speaker_id
+      
+      if(!id1.nil? && !id2.nil?)
+        exchange = Exchange.find_by_id1_and_id2(id1, id2)
+        
+        if(count % 10 == 0)
+          puts count
+        end
+        count = count + 1
+        if(exchange.nil?)
+          ex1 = Exchange.new(:id1 => id1, :id2 => id2, :count => 1)
+          ex1.save
+          if(id1 != id2)
+            ex2 = Exchange.new(:id1 => id2, :id2 => id1, :count => 1)
+            ex2.save
+          end
+        else
+          exchange.count = exchange.count + 1
+          exchange.save
+          if(id1 != id2)
+            exchange = Exchange.find_by_id1_and_id2(id2, id1)
+            exchange.count = exchange.count + 1
+            exchange.save
+          end
+        end
+        
+      end
+    end
+  end
+
   def process_words
     puts "in process words"
     @sentences = Sentence.all

@@ -1,5 +1,8 @@
 FuturamaTranscriptsScraper::Application.routes.draw do
   
+  resources :exchanges
+
+  match 'process_exchanges', :to => 'scrapers#process_exchanges'
   match 'process_words', :to => 'scrapers#process_words'
   match 'scrapers', :to => 'scrapers#index'
   resources :counts

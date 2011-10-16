@@ -1,0 +1,27 @@
+<h1>Listing exchanges</h1>
+
+<table>
+  <tr>
+    <th>Id1</th>
+    <th>Id2</th>
+    <th>Count</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @exchanges.each do |exchange| %>
+  <tr>
+    <td><%= exchange.id1 %></td>
+    <td><%= exchange.id2 %></td>
+    <td><%= exchange.count %></td>
+    <td><%= link_to 'Show', exchange %></td>
+    <td><%= link_to 'Edit', edit_exchange_path(exchange) %></td>
+    <td><%= link_to 'Destroy', exchange, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Exchange', new_exchange_path %>

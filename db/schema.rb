@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111007032601) do
+ActiveRecord::Schema.define(:version => 20111009170623) do
 
   create_table "counts", :force => true do |t|
     t.integer  "episode_id"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(:version => 20111007032601) do
   create_table "episodes", :force => true do |t|
     t.integer  "episode"
     t.integer  "season"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "exchanges", :force => true do |t|
+    t.integer  "id1"
+    t.integer  "id2"
+    t.integer  "count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

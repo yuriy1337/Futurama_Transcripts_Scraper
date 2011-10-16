@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id1: 1
+  id2: 1
+  count: 1
+
+two:
+  id1: 1
+  id2: 1
+  count: 1
